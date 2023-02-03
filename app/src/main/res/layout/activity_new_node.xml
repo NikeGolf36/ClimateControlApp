@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edit_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/hint_word"
+        android:inputType="textAutoComplete"
+        android:minHeight="48dp"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/edit_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/hint_temp"
+        android:inputType="textAutoComplete"
+        android:minHeight="48dp"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/edit_hmd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/hint_hmd"
+        android:inputType="textAutoComplete"
+        android:minHeight="48dp"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_padding"
+        android:background="@color/black"
+        android:text="@string/button_save"
+        android:textColor="@color/button_color"
+        app:strokeColor="@color/button_color" />
+
+</LinearLayout>
