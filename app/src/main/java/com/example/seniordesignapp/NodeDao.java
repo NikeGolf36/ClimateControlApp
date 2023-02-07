@@ -6,6 +6,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
+
 import java.util.List;
 
 @Dao
@@ -23,4 +25,10 @@ public interface NodeDao {
 
     @Delete
     void deleteNode(Node node);
+
+    @Update
+    void updateNode(Node node);
+
+    @Query("SELECT * FROM node_table")
+    List<Node> getNodes();
 }

@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class NodeListAdapter extends ListAdapter<Node, NodeViewHolder> {
-    //private NodeClickListener listener;
+
 
     public NodeListAdapter(@NonNull DiffUtil.ItemCallback<Node> diffCallback) {
         super(diffCallback);
-        //this.listener = listener;
     }
 
     @Override

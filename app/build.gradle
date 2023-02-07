@@ -55,4 +55,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation "androidx.test.ext:junit:$rootProject.androidxJunitVersion"
+    implementation "androidx.work:work-runtime:$versions_work"
+    implementation "com.influxdb:influxdb-client-java:6.7.0"
 }

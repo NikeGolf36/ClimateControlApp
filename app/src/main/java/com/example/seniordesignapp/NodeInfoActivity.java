@@ -26,7 +26,7 @@ public class NodeInfoActivity extends AppCompatActivity {
         }
 
         node.setText(node_name);
-        t_view.setText(String.valueOf(temp));
-        h_view.setText(String.valueOf(hmd));
+        t_view.setText("Current Temperature:  " + String.valueOf(temp) + " \u2109");
+        h_view.setText("Current Humidity:  " + String.valueOf(hmd) + " %");
     }
 }

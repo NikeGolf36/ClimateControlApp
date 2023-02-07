@@ -8,31 +8,39 @@
 
     <TextView
         android:id="@+id/textViewNodeName"
-        android:layout_width="195dp"
-        android:layout_height="91dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="464dp"
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_marginBottom="604dp"
+        android:gravity="center"
         android:text="TextView"
+        android:textSize="35sp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewTemp"
-        android:layout_width="86dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="156dp"
-        android:layout_marginEnd="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="144dp"
+        android:gravity="center"
         android:text="TextView"
+        android:textSize="25sp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewHmd"
-        android:layout_width="85dp"
-        android:layout_height="47dp"
-        android:layout_marginEnd="56dp"
-        android:layout_marginBottom="432dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="468dp"
+        android:gravity="center"
         android:text="TextView"
+        android:textSize="25sp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

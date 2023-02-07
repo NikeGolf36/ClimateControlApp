@@ -6,7 +6,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private NodeViewModel mNodeViewModel;
@@ -65,6 +73,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         helper.attachToRecyclerView(recyclerView);
+
+        //PeriodicWorkRequest backgroundWork = new PeriodicWorkRequest.Builder(BackgroundWorker.class, 16, TimeUnit.MINUTES).build();
+        WorkRequest backgroundWork = OneTimeWorkRequest.from(BackgroundWorker.class);
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.enqueue(backgroundWork);
+        //workManager.enqueueUniquePeriodicWork("q", ExistingPeriodicWorkPolicy.KEEP, backgroundWork);
+
+        //workManager.getWorkInfosForUniqueWork("query");
+        //workManager.cancelUniqueWork("query");
+
+        //Node node = adapter.getNodeAtPosition(1);
+       // node.setNode_name("Hello");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -75,26 +95,8 @@ public class MainActivity extends AppCompatActivity {
             double hmd = new Double(data.getStringExtra(NewNodeActivity.EXTRA_REPLY_H)).doubleValue();
             Node node = new Node(data.getStringExtra(NewNodeActivity.EXTRA_REPLY), temp, hmd);
             mNodeViewModel.insert(node);
-        } else {
-            Toast.makeText(
-                    getApplicationContext(),
-                    R.string.empty_not_saved,
-                    Toast.LENGTH_LONG).show();
+            //Node node1 = new Node(data.getStringExtra(NewNodeActivity.EXTRA_REPLY), 0, 0);
+            //mNodeViewModel.updateNode(node1);
         }
     }
-/*
-    private void setOnClickListener(){
-        listener = new NodeClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Node node = adapter.getNodeAtPosition(position);
-                Intent intent = new Intent(getApplicationContext(), NodeInfoActivity.class);
-                intent.putExtra("node_name", node.getNode_name());
-                intent.putExtra("temp", node.getTemp());
-                intent.putExtra("hmd", node.getHmd());
-                startActivity(intent);
-            }
-        };
-    }*/
-
 }

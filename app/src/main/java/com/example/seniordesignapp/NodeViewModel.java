@@ -25,4 +25,5 @@ public class NodeViewModel extends AndroidViewModel {
 
     public void deleteAll() {mRepository.deleteAll();}
     public void deleteNode(Node node) {mRepository.deleteNode(node);}
+    public void updateNode(Node node) {mRepository.updateNode(node);}
 }

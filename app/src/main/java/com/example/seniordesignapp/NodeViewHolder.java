@@ -8,16 +8,23 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 class NodeViewHolder extends RecyclerView.ViewHolder{
-    private final TextView nodeItemView;
+    private final TextView nodeView;
+    private final TextView tempView;
+    private final TextView hmdView;
 
     private NodeViewHolder(View itemView) {
         super(itemView);
-        nodeItemView = itemView.findViewById(R.id.textView);
+        nodeView = itemView.findViewById(R.id.nodeView);
+        tempView = itemView.findViewById(R.id.tempView);
+        hmdView = itemView.findViewById(R.id.hmdView);
+
     }
 
     public void bind(String text, double temp, double hmd) {
         String node_out = text + " " + temp + " " + hmd;
-        nodeItemView.setText(node_out);
+        nodeView.setText(text);
+        tempView.setText(String.valueOf(temp) + " \u2109");
+        hmdView.setText(String.valueOf(hmd) + " %");
     }
 
     static NodeViewHolder create(ViewGroup parent) {

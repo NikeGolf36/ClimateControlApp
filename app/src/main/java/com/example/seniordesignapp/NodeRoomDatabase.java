@@ -20,6 +20,8 @@ public abstract class NodeRoomDatabase extends RoomDatabase {
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     static final ExecutorService databaseDeleteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    static final ExecutorService databaseUpdateExecutor =
+            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     static NodeRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
