@@ -34,7 +34,8 @@ public class BackgroundWorker extends Worker {
 
         String flux = "from(bucket:\"Sensor Data\") " +
                 "|> range(start: -1d) " +
-                "|> filter(fn: (r) => r._measurement == \"values\")"
+                "|> filter(fn: (r) => r._measurement == \"values\")" +
+                "|> last()"
                 ;
 
         QueryApi queryApi = influxDBClient.getQueryApi();
@@ -56,7 +57,7 @@ public class BackgroundWorker extends Worker {
                         if (fluxRecord.getValueByKey("_field").equals("hmd")) {
                             current_hmd = ((Number) fluxRecord.getValueByKey("_value")).doubleValue();
                         }
-                        //System.out.println(fluxRecord.getTime() + ": " + fluxRecord.getValueByKey("_field") + ' ' + fluxRecord.getValueByKey("_value") + ' ' + fluxRecord.getValueByKey("location"));
+                        System.out.println(fluxRecord.getTime() + ": " + fluxRecord.getValueByKey("_field") + ' ' + fluxRecord.getValueByKey("_value") + ' ' + fluxRecord.getValueByKey("location"));
                     }
                 }
 

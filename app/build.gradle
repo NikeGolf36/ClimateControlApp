@@ -57,4 +57,5 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$rootProject.androidxJunitVersion"
     implementation "androidx.work:work-runtime:$versions_work"
     implementation "com.influxdb:influxdb-client-java:6.7.0"
+    implementation 'com.jjoe64:graphview:4.2.2'
 }

@@ -75,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
         helper.attachToRecyclerView(recyclerView);
 
         //PeriodicWorkRequest backgroundWork = new PeriodicWorkRequest.Builder(BackgroundWorker.class, 16, TimeUnit.MINUTES).build();
-        WorkRequest backgroundWork = OneTimeWorkRequest.from(BackgroundWorker.class);
-        WorkManager workManager = WorkManager.getInstance(this);
-        workManager.enqueue(backgroundWork);
+        //WorkRequest backgroundWork = OneTimeWorkRequest.from(BackgroundWorker.class);
+        //WorkManager workManager = WorkManager.getInstance(this);
+        //workManager.enqueue(backgroundWork);
         //workManager.enqueueUniquePeriodicWork("q", ExistingPeriodicWorkPolicy.KEEP, backgroundWork);
 
         //workManager.getWorkInfosForUniqueWork("query");
@@ -85,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Node node = adapter.getNodeAtPosition(1);
        // node.setNode_name("Hello");
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        WorkRequest backgroundWork = OneTimeWorkRequest.from(BackgroundWorker.class);
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.enqueue(backgroundWork);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
