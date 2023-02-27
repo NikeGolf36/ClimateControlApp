@@ -58,4 +58,5 @@ dependencies {
     implementation "androidx.work:work-runtime:$versions_work"
     implementation "com.influxdb:influxdb-client-java:6.7.0"
     implementation 'com.jjoe64:graphview:4.2.2'
+    implementation "androidx.core:core:$core_version"
 }

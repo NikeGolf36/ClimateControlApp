@@ -7,4 +7,6 @@
     <string name="hint_hmd">Hmd...</string>
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="channel_name">climate_control</string>
+    <string name="channel_description">notification channel for climate control application</string>
 </resources>

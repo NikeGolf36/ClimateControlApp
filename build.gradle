@@ -16,4 +16,5 @@ ext {
     espressoVersion = '3.4.0'
     androidxJunitVersion = '1.1.2'
     versions_work = '2.7.1'
+    core_version = '1.6.0'
 }

@@ -1,7 +1,10 @@
 package com.example.seniordesignapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -12,6 +15,7 @@ import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
+import java.lang.Math;
 
 import java.util.List;
 
@@ -69,6 +73,57 @@ public class BackgroundWorker extends Worker {
         }
 
         influxDBClient.close();
+
+        windowCalculation(75.0, 45.5, 68, 80);
         return Result.success();
+    }
+
+    public void windowCalculation(double i_temp, double i_hmd, double o_temp, double o_hmd){
+        SharedPreferences windowPref = getApplicationContext().getSharedPreferences("windowPref", MODE_PRIVATE);
+        SharedPreferences.Editor updatePref = windowPref.edit();
+        boolean windowStatus = false;
+        String string = "Closed";
+        int notif = 0;
+        float des_temp = windowPref.getFloat("desTemp", 71);
+        //convert to C
+        des_temp = (des_temp - 32) * 5/9;
+        i_temp = (i_temp - 32) * 5/9;
+        o_temp = (o_temp - 32) * 5/9;
+
+        //get indoor and outdoor dewpoint
+        double i_dew = (i_temp * 17.625)/(i_temp + 243.04) + Math.log(i_hmd/100.0);
+        i_dew = (i_dew * 243.04)/(17.625 - i_dew);
+        //System.out.println(i_dew);
+
+
+        double o_dew = (o_temp * 17.625)/(o_temp + 243.04) + Math.log(o_hmd/100.0);
+        o_dew = (o_dew * 243.04)/(17.625 - o_dew);
+        //System.out.println(o_dew);
+
+
+        if(i_temp > des_temp + 1.5 && i_temp > o_temp){ //indoor 1.5 degrees (C) above desired and outdoor is less
+            if(i_dew + 5 > o_dew){ //outdoor moisture is about the same or lower that indoor moisture
+                windowStatus = true;
+                string = "Opened";
+            }
+        }
+
+        if(windowStatus == true && windowPref.getBoolean("status", false) == false) {
+            notif = 1; //notify user to open window
+        }
+        else if(windowStatus == false && windowPref.getBoolean("status", false) == true){
+            notif = 2; //notify user to close window
+        }
+        //System.out.println(windowStatus);
+        //System.out.println(string);
+
+        updatePref.putBoolean("status", windowStatus);
+        updatePref.putString("string", string);
+        updatePref.putInt("notif", notif);
+        updatePref.apply();
+
+        System.out.println(windowPref.getBoolean("status", false));
+        System.out.println(windowPref.getString("string", ""));
+        System.out.println(windowPref.getInt("notif", 0));
     }
 }
