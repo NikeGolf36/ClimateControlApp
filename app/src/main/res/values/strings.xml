@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Senior Design App</string>
+    <string name="app_name">Climate Control</string>
     <string name="add_node"></string>
     <string name="hint_word">Name...</string>
     <string name="win">Window Status: Closed</string>

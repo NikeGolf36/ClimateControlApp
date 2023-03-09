@@ -68,7 +68,7 @@ public class NodeInfoActivity extends AppCompatActivity {
 
         String flux = "from(bucket:\"Sensor Data\") " +
                 "|> range(start: -1d) " +
-                "|> filter(fn: (r) => r._measurement == \"values\")"
+                "|> filter(fn: (r) => r._measurement == \"climate\")"
                 ;
 
         QueryApi queryApi = influxDBClient.getQueryApi();

@@ -38,7 +38,7 @@ public class BackgroundWorker extends Worker {
 
         String flux = "from(bucket:\"Sensor Data\") " +
                 "|> range(start: -1d) " +
-                "|> filter(fn: (r) => r._measurement == \"values\")" +
+                "|> filter(fn: (r) => r._measurement == \"climate\")" +
                 "|> last()"
                 ;
 
@@ -74,7 +74,7 @@ public class BackgroundWorker extends Worker {
 
         influxDBClient.close();
 
-        windowCalculation(75.0, 45.5, 68, 80);
+        windowCalculation(75.0, 45.5, 68, 50);
         return Result.success();
     }
 
@@ -85,6 +85,7 @@ public class BackgroundWorker extends Worker {
         String string = "Closed";
         int notif = 0;
         float des_temp = windowPref.getFloat("desTemp", 71);
+        System.out.println(des_temp);
         //convert to C
         des_temp = (des_temp - 32) * 5/9;
         i_temp = (i_temp - 32) * 5/9;

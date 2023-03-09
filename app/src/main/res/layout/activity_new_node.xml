@@ -16,28 +16,6 @@
         android:minHeight="48dp"
         android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/edit_temp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/big_padding"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_temp"
-        android:inputType="textAutoComplete"
-        android:minHeight="48dp"
-        android:textSize="18sp" />
-
-    <EditText
-        android:id="@+id/edit_hmd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/big_padding"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_hmd"
-        android:inputType="textAutoComplete"
-        android:minHeight="48dp"
-        android:textSize="18sp" />
-
     <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/window_color">
+
+    <TextView
+        android:id="@+id/destemp_header"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="bottom|center_horizontal"
+        android:text="Desired Temp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/edit_destemp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="Desired Temp..."
+        android:inputType="textAutoComplete"
+        android:minHeight="48dp"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/destemp_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:background="@color/black"
+        android:text="Save"
+        android:textColor="@color/button_color" />
+
+</LinearLayout>

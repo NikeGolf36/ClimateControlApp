@@ -11,4 +11,5 @@
     <color name="red">#FF0000</color>
     <color name="window_color">#A677C3EC</color>
     <color name="button_color">#FF77C3EC</color>
+    <color name="ic_launcher_background">#3B3B3B</color>
 </resources>
