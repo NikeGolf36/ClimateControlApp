@@ -23,8 +23,8 @@ class NodeViewHolder extends RecyclerView.ViewHolder{
     public void bind(String text, double temp, double hmd) {
         String node_out = text + " " + temp + " " + hmd;
         nodeView.setText(text);
-        tempView.setText(String.valueOf(temp) + " \u2109");
-        hmdView.setText(String.valueOf(hmd) + " %");
+        tempView.setText(String.valueOf(Math.round(temp * 10.0)/10.0) + " \u2109");
+        hmdView.setText(String.valueOf(Math.round(hmd * 10.0)/10.0) + " %");
     }
 
     static NodeViewHolder create(ViewGroup parent) {

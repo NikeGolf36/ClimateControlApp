@@ -41,6 +41,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.espressif.provisioning.ESPProvisionManager;
+import com.espressif.provisioning.ESPConstants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.concurrent.TimeUnit;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayout;
     private NotificationCompat.Builder open_notification;
     private NotificationCompat.Builder closed_notification;
+    private ESPProvisionManager provisionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         window_status = findViewById(R.id.windowstatus);
         constraintLayout = findViewById(R.id.main_layout);
+        provisionManager = ESPProvisionManager.getInstance(getApplicationContext());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
@@ -155,11 +159,15 @@ public class MainActivity extends AppCompatActivity {
 
                 // Get a reference for the custom view close button
                 EditText EditDesTemp = customView.findViewById(R.id.edit_destemp);
+                EditText EditIndoor = customView.findViewById(R.id.edit_indoor);
+                EditText EditOutdoor = customView.findViewById(R.id.edit_outdoor);
                 Button closeButton = customView.findViewById(R.id.destemp_save);
 
                 SharedPreferences windowPref = getApplicationContext().getSharedPreferences("windowPref", MODE_PRIVATE);
                 SharedPreferences.Editor updatePref = windowPref.edit();
                 EditDesTemp.setText(String.valueOf(windowPref.getFloat("desTemp", 70)));
+                EditIndoor.setText(String.valueOf(windowPref.getString("indoor", "Indoor")));
+                EditOutdoor.setText(String.valueOf(windowPref.getString("outdoor", "Outdoor")));
 
                 // Set a click listener for the popup window close button
                 closeButton.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
 
                         Float desTemp = Float.valueOf(EditDesTemp.getText().toString());
                         updatePref.putFloat("desTemp", desTemp);
+                        updatePref.putString("indoor", EditIndoor.getText().toString());
+                        updatePref.putString("outdoor", EditOutdoor.getText().toString());
                         updatePref.apply();
                         System.out.println(windowPref.getFloat("desTemp", 70));
                         // Dismiss the popup window
@@ -209,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         //create node
         if (requestCode == NEW_NODE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Node node = new Node(data.getStringExtra(NewNodeActivity.EXTRA_REPLY), 0, 0);
+            Node node = new Node(data.getStringExtra(NewNodeActivity.Name_Reply), 0, 0);
             mNodeViewModel.insert(node);
         }
     }

@@ -43,9 +43,15 @@ public class BackgroundWorker extends Worker {
                 ;
 
         QueryApi queryApi = influxDBClient.getQueryApi();
+        SharedPreferences windowPref = getApplicationContext().getSharedPreferences("windowPref", MODE_PRIVATE);
+        SharedPreferences.Editor updatePref = windowPref.edit();
 
         double current_temp = 0.0;
         double current_hmd = 0.0;
+        double indoor_temp = 0.0;
+        double indoor_hmd = 0.0;
+        double outdoor_temp = 0.0;
+        double outdoor_hmd = 0.0;
 
         List<Node> nodes = repo.getNodes();
 
@@ -69,12 +75,29 @@ public class BackgroundWorker extends Worker {
             System.out.println(node.getNode_name() + " " + current_temp + " " + current_hmd);
             Node updated_node = new Node(node.getNode_name(), current_temp, current_hmd);
             repo.updateNode(updated_node);
+            if(node.getNode_name().equals(windowPref.getString("indoor", "Indoor"))){
+                indoor_temp = current_temp;
+                indoor_hmd = current_hmd;
+            }
+            else if(node.getNode_name().equals(windowPref.getString("outdoor", "Outdoor"))){
+                outdoor_temp = current_temp;
+                outdoor_hmd = current_hmd;
+            }
             current_hmd = current_temp = 0.0;
         }
 
         influxDBClient.close();
 
-        windowCalculation(75.0, 45.5, 68, 50);
+        //windowCalculation(75.0, 45.5, 68, 50);
+        if(indoor_temp != 0 && indoor_hmd != 0 && outdoor_temp != 0 && outdoor_hmd != 0){
+            windowCalculation(indoor_temp, indoor_hmd, outdoor_temp, outdoor_hmd);
+        }
+        else{
+            System.out.println("Cannot calculate window status, check connections and sensor names");
+            updatePref.putBoolean("status", false);
+            updatePref.putString("string", "Closed");
+            updatePref.apply();
+        }
         return Result.success();
     }
 

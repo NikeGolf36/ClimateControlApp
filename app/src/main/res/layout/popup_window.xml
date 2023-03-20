@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="200dp"
     android:layout_height="wrap_content"
-    android:background="@color/window_color">
+    android:background="@color/window_color"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/destemp_header"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="bottom|center_horizontal"
-        android:text="Desired Temp"
+        android:text="Window Info"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -19,21 +19,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginEnd="@dimen/big_padding"
-        android:layout_marginBottom="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/small_padding"
         android:fontFamily="sans-serif-light"
         android:hint="Desired Temp..."
         android:inputType="textAutoComplete"
         android:minHeight="48dp"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/edit_indoor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="Indoor..."
+        android:inputType="textAutoComplete"
+        android:minHeight="48dp"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/edit_outdoor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/big_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:fontFamily="sans-serif-light"
+        android:hint="Outdoor..."
+        android:inputType="textAutoComplete"
+        android:minHeight="48dp"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/destemp_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
+        android:layout_marginTop="@dimen/small_padding"
         android:layout_marginEnd="@dimen/big_padding"
         android:layout_marginBottom="@dimen/big_padding"
         android:background="@color/black"
