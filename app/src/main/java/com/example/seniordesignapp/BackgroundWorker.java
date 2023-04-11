@@ -37,7 +37,7 @@ public class BackgroundWorker extends Worker {
         InfluxDBClient influxDBClient = InfluxDBClientFactory.create("https://europe-west1-1.gcp.cloud2.influxdata.com", token, org, bucket);
 
         String flux = "from(bucket:\"Sensor Data\") " +
-                "|> range(start: -1d) " +
+                "|> range(start: -10m) " +
                 "|> filter(fn: (r) => r._measurement == \"climate\")" +
                 "|> last()"
                 ;
@@ -60,7 +60,7 @@ public class BackgroundWorker extends Worker {
             for (FluxTable fluxTable : tables) {
                 List<FluxRecord> records = fluxTable.getRecords();
                 for (FluxRecord fluxRecord : records) {
-                    if(fluxRecord.getValueByKey("location").equals(node.getNode_name())) {
+                    if(fluxRecord.getValueByKey("id").equals(node.getId())) {
                         if (fluxRecord.getValueByKey("_field").equals("temp")) {
                             current_temp = ((Number) fluxRecord.getValueByKey("_value")).doubleValue();
                         }
@@ -72,8 +72,8 @@ public class BackgroundWorker extends Worker {
                 }
 
             }
-            System.out.println(node.getNode_name() + " " + current_temp + " " + current_hmd);
-            Node updated_node = new Node(node.getNode_name(), current_temp, current_hmd);
+            System.out.println(node.getId() + " " + current_temp + " " + current_hmd);
+            Node updated_node = new Node(node.getId(), node.getNode_name(), current_temp, current_hmd);
             repo.updateNode(updated_node);
             if(node.getNode_name().equals(windowPref.getString("indoor", "Indoor"))){
                 indoor_temp = current_temp;

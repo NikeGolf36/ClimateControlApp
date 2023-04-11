@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Node.class}, version = 1, exportSchema = false)
+@Database(entities = {Node.class}, version = 3, exportSchema = false)
 public abstract class NodeRoomDatabase extends RoomDatabase {
 
     public abstract NodeDao nodeDao();
@@ -29,6 +29,7 @@ public abstract class NodeRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     NodeRoomDatabase.class, "node_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

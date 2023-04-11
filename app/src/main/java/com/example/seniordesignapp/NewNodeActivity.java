@@ -51,7 +51,8 @@ import org.json.JSONObject;
 
 public class NewNodeActivity extends AppCompatActivity {
 
-    public static final String Name_Reply = "REPLY";
+    public static final String Name_Reply = "NAME_REPLY";
+    public static final String Id_Reply = "ID_REPLY";
     private static final String TAG = NewNodeActivity.class.getSimpleName();
 
     // Request codes
@@ -76,6 +77,7 @@ public class NewNodeActivity extends AppCompatActivity {
     private int position = -1;
     private String deviceNamePrefix = "clim_ctrl";
     private String pop = "abcd1234";
+    private String deviceId = "";
     private boolean isDeviceConnected = false, isConnecting = false;
     private boolean isScanning = false;
 
@@ -113,19 +115,6 @@ public class NewNodeActivity extends AppCompatActivity {
         provisionManager.createESPDevice(ESPConstants.TransportType.TRANSPORT_BLE, ESPConstants.SecurityType.SECURITY_1);
         EventBus.getDefault().register(this);
 
-
-        final Button button = findViewById(R.id.button_save);
-        button.setOnClickListener(view -> {
-            Intent replyIntent = new Intent();
-            if (TextUtils.isEmpty(EditNodeName.getText())) {
-                setResult(RESULT_CANCELED, replyIntent);
-            } else {
-                String word = EditNodeName.getText().toString();
-                replyIntent.putExtra(Name_Reply, word);
-                setResult(RESULT_OK, replyIntent);
-            }
-            finish();
-        });
         initViews();
     }
 
@@ -369,7 +358,8 @@ public class NewNodeActivity extends AppCompatActivity {
         }
 
         if (deviceList.size() <= 0) {
-            Toast.makeText(NewNodeActivity.this, "No BLE Devices", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "No BLE Device Found");
+            Toast.makeText(NewNodeActivity.this, "No Sensors Found", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -474,6 +464,7 @@ public class NewNodeActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 NewNodeActivity.this.position = position;
                 BleDevice bleDevice = adapter.getItem(position);
+                deviceId = bleDevice.getName();
                 String uuid = bluetoothDevices.get(bleDevice.getBluetoothDevice());
                 Log.d(TAG, "=================== Connect to device : " + bleDevice.getName() + " UUID : " + uuid);
 
@@ -559,18 +550,6 @@ public class NewNodeActivity extends AppCompatActivity {
         Log.d(TAG, "PASSWORD: " + password);
         progressBar.setVisibility(View.VISIBLE);
 
-        provisionManager.getEspDevice().sendDataToCustomEndPoint("name", EditNodeName.getText().toString().getBytes(), new ResponseListener() {
-            @Override
-            public void onSuccess(byte[] returnData) {
-                Log.d(TAG, "Success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        });
-
         provisionManager.getEspDevice().provision(ssid, password, new ProvisionListener() {
 
             @Override
@@ -581,7 +560,8 @@ public class NewNodeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(NewNodeActivity.this, "Session Failed", Toast.LENGTH_LONG).show();
+                        btnScan.setVisibility(View.VISIBLE);
+                        Toast.makeText(NewNodeActivity.this, "Session Failed: Please Reset Sensor and Try Again", Toast.LENGTH_LONG).show();
                         if (provisionManager.getEspDevice() != null) {
                             provisionManager.getEspDevice().disconnectDevice();
                         }
@@ -610,7 +590,8 @@ public class NewNodeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(NewNodeActivity.this, "WiFi Credentials Send Failed", Toast.LENGTH_LONG).show();
+                        btnScan.setVisibility(View.VISIBLE);
+                        Toast.makeText(NewNodeActivity.this, "WiFi Credentials Send Failed: Please Reset Sensor and Try Again", Toast.LENGTH_LONG).show();
                         if (provisionManager.getEspDevice() != null) {
                             provisionManager.getEspDevice().disconnectDevice();
                         }
@@ -638,7 +619,8 @@ public class NewNodeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(NewNodeActivity.this, "WiFi Credentials Incorrect", Toast.LENGTH_LONG).show();
+                        btnScan.setVisibility(View.VISIBLE);
+                        Toast.makeText(NewNodeActivity.this, "WiFi Credentials Incorrect: Please Reset Sensor and Try Again", Toast.LENGTH_LONG).show();
                         if (provisionManager.getEspDevice() != null) {
                             provisionManager.getEspDevice().disconnectDevice();
                         }
@@ -656,19 +638,20 @@ public class NewNodeActivity extends AppCompatActivity {
                         switch (failureReason) {
                             case AUTH_FAILED:
                                 Log.e(TAG, "Authentication Failed");
-                                Toast.makeText(NewNodeActivity.this, "Authentication Failed", Toast.LENGTH_LONG).show();
+                                Toast.makeText(NewNodeActivity.this, "Authentication Failed: Please Reset Sensor and Try Again", Toast.LENGTH_LONG).show();
                                 break;
                             case NETWORK_NOT_FOUND:
                                 Log.e(TAG, "Network Not Found");
-                                Toast.makeText(NewNodeActivity.this, "Network Not Found", Toast.LENGTH_LONG).show();
+                                Toast.makeText(NewNodeActivity.this, "Network Not Found: Please Reset Sensor and Try Again", Toast.LENGTH_LONG).show();
                                 break;
                             case DEVICE_DISCONNECTED:
                             case UNKNOWN:
                                 Log.e(TAG, "Error Provisioning Step 3");;
-                                Toast.makeText(NewNodeActivity.this, "Error: Please Try Again", Toast.LENGTH_LONG).show();
+                                Toast.makeText(NewNodeActivity.this, "Error: Please Reset Sensor and Try Again", Toast.LENGTH_LONG).show();
                                 break;
                         }
                         progressBar.setVisibility(View.GONE);
+                        btnScan.setVisibility(View.VISIBLE);
                         if (provisionManager.getEspDevice() != null) {
                             provisionManager.getEspDevice().disconnectDevice();
                         }
@@ -691,6 +674,7 @@ public class NewNodeActivity extends AppCompatActivity {
                         String word = EditNodeName.getText().toString();
                         Intent replyIntent = new Intent();
                         replyIntent.putExtra(Name_Reply, word);
+                        replyIntent.putExtra(Id_Reply, deviceId);
                         setResult(RESULT_OK, replyIntent);
                         finish();
                     }
@@ -705,7 +689,8 @@ public class NewNodeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(NewNodeActivity.this, "Connection Failed", Toast.LENGTH_LONG).show();
+                        btnScan.setVisibility(View.VISIBLE);
+                        Toast.makeText(NewNodeActivity.this, "Connection Failed: Please Reset Sensor and Try Again", Toast.LENGTH_LONG).show();
                         if (provisionManager.getEspDevice() != null) {
                             provisionManager.getEspDevice().disconnectDevice();
                         }

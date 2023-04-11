@@ -31,6 +31,7 @@ public class NodeInfoActivity extends AppCompatActivity {
     private static String org = "e39c345d7ab3212f";
     private static String bucket = "Sensor Data";
     public String node_name;
+    public String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class NodeInfoActivity extends AppCompatActivity {
         double hmd = 0.0;
         Bundle extras = getIntent().getExtras();
         if(extras != null){
+            id = extras.getString("id");
             node_name = extras.getString("node_name");
             temp = extras.getDouble("temp");
             hmd = extras.getDouble("hmd");
@@ -67,7 +69,7 @@ public class NodeInfoActivity extends AppCompatActivity {
         InfluxDBClient influxDBClient = InfluxDBClientFactory.create("https://europe-west1-1.gcp.cloud2.influxdata.com", token, org, bucket);
 
         String flux = "from(bucket:\"Sensor Data\") " +
-                "|> range(start: -1d) " +
+                "|> range(start: -10m) " +
                 "|> filter(fn: (r) => r._measurement == \"climate\")"
                 ;
 
@@ -85,7 +87,7 @@ public class NodeInfoActivity extends AppCompatActivity {
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
             for (FluxRecord fluxRecord : records) {
-                if(fluxRecord.getValueByKey("location").equals(node_name)) {
+                if(fluxRecord.getValueByKey("id").equals(id)) {
                     if (fluxRecord.getValueByKey("_field").equals("temp")) {
                         Date date = null;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

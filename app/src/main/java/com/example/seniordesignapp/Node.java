@@ -10,6 +10,9 @@ public class Node {
 
     @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "id")
+    private String id;
+
     @ColumnInfo(name = "node_name")
     private String node_name;
 
@@ -19,10 +22,15 @@ public class Node {
     @ColumnInfo(name = "hmd")
     private double hmd;
 
-    public Node(String node_name, double temp, double hmd) {
+    public Node(String id, String node_name, double temp, double hmd) {
+        this.id = id;
         this.node_name = node_name;
         this.temp = temp;
         this.hmd = hmd;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public String getNode_name() {

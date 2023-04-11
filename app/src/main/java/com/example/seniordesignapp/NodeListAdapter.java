@@ -34,6 +34,7 @@ public class NodeListAdapter extends ListAdapter<Node, NodeViewHolder> {
                 // call activity.
                 Intent intent = new Intent(v.getContext(), NodeInfoActivity.class);
                 // For passing values
+                intent.putExtra("id", current.getId());
                 intent.putExtra("node_name", current.getNode_name());
                 intent.putExtra("temp", current.getTemp());
                 intent.putExtra("hmd", current.getHmd());
@@ -58,5 +59,4 @@ public class NodeListAdapter extends ListAdapter<Node, NodeViewHolder> {
     public Node getNodeAtPosition (int position) {
         return getItem(position);
     }
-
 }
