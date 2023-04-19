@@ -20,8 +20,8 @@ import java.lang.Math;
 import java.util.List;
 
 public class BackgroundWorker extends Worker {
-    private static char[] token = "1LP6zDF9s5Jku-kiOEBiDkEX_uTUh61Ig97BslDlLI-nc2bZavpQGbhmW_4gc4YgCjDbPs94pS2aKji_fpJy1A==".toCharArray();
-    private static String org = "e39c345d7ab3212f";
+    private char[] token = getApplicationContext().getString(R.string.token).toCharArray();
+    private String org = getApplicationContext().getString(R.string.org);
     private static String bucket = "Sensor Data";
     private NodeRepository repo;
 
@@ -37,7 +37,7 @@ public class BackgroundWorker extends Worker {
         InfluxDBClient influxDBClient = InfluxDBClientFactory.create("https://europe-west1-1.gcp.cloud2.influxdata.com", token, org, bucket);
 
         String flux = "from(bucket:\"Sensor Data\") " +
-                "|> range(start: -10m) " +
+                "|> range(start: -1d) " +
                 "|> filter(fn: (r) => r._measurement == \"climate\")" +
                 "|> last()"
                 ;

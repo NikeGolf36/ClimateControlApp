@@ -2,8 +2,11 @@ package com.example.seniordesignapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Application;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.influxdb.client.QueryApi;
@@ -27,11 +30,13 @@ import java.util.Date;
 import java.util.List;
 
 public class NodeInfoActivity extends AppCompatActivity {
-    private static char[] token = "1LP6zDF9s5Jku-kiOEBiDkEX_uTUh61Ig97BslDlLI-nc2bZavpQGbhmW_4gc4YgCjDbPs94pS2aKji_fpJy1A==".toCharArray();
-    private static String org = "e39c345d7ab3212f";
+    private char[] token;
+    private String org;
     private static String bucket = "Sensor Data";
     public String node_name;
     public String id;
+    private NodeRepository repo;
+    private Button delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,11 @@ public class NodeInfoActivity extends AppCompatActivity {
         TextView node = findViewById(R.id.textViewNodeName);
         TextView t_view = findViewById(R.id.textViewTemp);
         TextView h_view = findViewById(R.id.textViewHmd);
+        repo = new NodeRepository((Application) getApplicationContext());
+        delete = findViewById(R.id.btn_delete);
+        delete.setOnClickListener(deleteOnClickListener);
+        token = getApplicationContext().getString(R.string.token).toCharArray();
+        org = getApplicationContext().getString(R.string.org);
 
         node_name = "node name not set";
         double temp = 0.0;
@@ -56,6 +66,8 @@ public class NodeInfoActivity extends AppCompatActivity {
         t_view.setText("Current Temperature:  " + String.valueOf(Math.round(temp * 10.0)/10.0) + " \u2109");
         h_view.setText("Current Humidity:  " + String.valueOf(Math.round(hmd * 10.0)/10.0) + " %");
 
+
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -65,11 +77,20 @@ public class NodeInfoActivity extends AppCompatActivity {
         t.start();
     }
 
+    private View.OnClickListener deleteOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Node node = new Node(id, "", 0, 0);
+            repo.deleteNode(node);
+            finish();
+        }
+    };
+
     public void make_graphs() {
         InfluxDBClient influxDBClient = InfluxDBClientFactory.create("https://europe-west1-1.gcp.cloud2.influxdata.com", token, org, bucket);
 
         String flux = "from(bucket:\"Sensor Data\") " +
-                "|> range(start: -10m) " +
+                "|> range(start: -1d) " +
                 "|> filter(fn: (r) => r._measurement == \"climate\")"
                 ;
 
