@@ -4,27 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NodeInfoActivity">
+    tools:context=".NodeInfoActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="-53dp">
 
     <TextView
         android:id="@+id/textViewNodeName"
         android:layout_width="match_parent"
         android:layout_height="87dp"
-        android:layout_marginBottom="604dp"
+        android:layout_marginBottom="636dp"
         android:gravity="center"
         android:text="TextView"
-        android:textSize="35sp"
         android:textColor="@color/black"
+        android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/tempGraph"
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:layout_marginBottom="380dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewTemp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="84dp"
         android:gravity="center"
         android:text="TextView"
         android:textColor="@color/black"
@@ -32,11 +42,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/hmdGraph"
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/textViewHmd"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="248dp"
+        android:layout_marginBottom="316dp"
         android:gravity="center"
         android:text="TextView"
         android:textColor="@color/black"
@@ -44,20 +62,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/tempGraph"
+    <Button
+        android:id="@+id/btn_delete"
         android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:layout_marginBottom="328dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/hmdGraph"
-        android:layout_width="match_parent"
-        android:layout_height="200dip"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
+        android:background="@color/black"
+        android:text="Delete"
+        android:textColor="@color/button_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/button_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
