@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxRecord;
@@ -32,6 +33,7 @@ import java.util.List;
 public class NodeInfoActivity extends AppCompatActivity {
     private char[] token;
     private String org;
+    private String url;
     private static String bucket = "Sensor Data";
     public String node_name;
     public String id;
@@ -46,11 +48,17 @@ public class NodeInfoActivity extends AppCompatActivity {
         TextView t_view = findViewById(R.id.textViewTemp);
         TextView h_view = findViewById(R.id.textViewHmd);
         repo = new NodeRepository((Application) getApplicationContext());
+
+        //delete button
         delete = findViewById(R.id.btn_delete);
         delete.setOnClickListener(deleteOnClickListener);
+
+        //InfluxDB secrets
         token = getApplicationContext().getString(R.string.token).toCharArray();
         org = getApplicationContext().getString(R.string.org);
+        url = getApplicationContext().getString(R.string.url);
 
+        //Set Node Info
         node_name = "node name not set";
         double temp = 0.0;
         double hmd = 0.0;
@@ -66,8 +74,6 @@ public class NodeInfoActivity extends AppCompatActivity {
         t_view.setText("Current Temperature:  " + String.valueOf(Math.round(temp * 10.0)/10.0) + " \u2109");
         h_view.setText("Current Humidity:  " + String.valueOf(Math.round(hmd * 10.0)/10.0) + " %");
 
-
-
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -82,12 +88,13 @@ public class NodeInfoActivity extends AppCompatActivity {
         public void onClick(View v) {
             Node node = new Node(id, "", 0, 0);
             repo.deleteNode(node);
+            Toast.makeText(NodeInfoActivity.this, "To complete unpairing process, hold down reset button for 3 sec", Toast.LENGTH_LONG).show();
             finish();
         }
     };
 
     public void make_graphs() {
-        InfluxDBClient influxDBClient = InfluxDBClientFactory.create("https://europe-west1-1.gcp.cloud2.influxdata.com", token, org, bucket);
+        InfluxDBClient influxDBClient = InfluxDBClientFactory.create(url, token, org, bucket);
 
         String flux = "from(bucket:\"Sensor Data\") " +
                 "|> range(start: -1d) " +
@@ -103,7 +110,6 @@ public class NodeInfoActivity extends AppCompatActivity {
         LineGraphSeries<DataPoint> hmdSeries = new LineGraphSeries<>();
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 
-        double loc = 0.0;
         List<FluxTable> tables = queryApi.query(flux);
         for (FluxTable fluxTable : tables) {
             List<FluxRecord> records = fluxTable.getRecords();
@@ -131,6 +137,8 @@ public class NodeInfoActivity extends AppCompatActivity {
             }
         }
         influxDBClient.close();
+
+        //temp graph
         tempGraph.addSeries(tempSeries);
         tempGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
         tempGraph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
@@ -149,25 +157,13 @@ public class NodeInfoActivity extends AppCompatActivity {
             }
         });
 
-        //tempGraph.getViewport().setMinX(now.getTime() - 24 * 3600 * 1000);
-        //tempGraph.getViewport().setMaxX(now.getTime());
-        //tempGraph.getViewport().setXAxisBoundsManual(true);
         tempGraph.getViewport().setScalable(true);
-        //tempGraph.getViewport().setScrollable(true);
-        //tempGraph.getGridLabelRenderer().setPadding(32);
-        //tempGraph.getGridLabelRenderer().setLabelsSpace(5);
-        //tempGraph.getGridLabelRenderer().setLabelsSpace(6*3600*1000);
-        //tempGraph.getGridLabelRenderer().setHumanRounding(false);
 
-        //tempGraph.getGridLabelRenderer().setHorizontalLabelsAngle(135);
-        //tempGraph.getGridLabelRenderer().setLabelHorizontalHeight(5);
-
-
+        //hmd graph
         hmdGraph.addSeries(hmdSeries);
         hmdGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
         hmdGraph.getGridLabelRenderer().setNumHorizontalLabels(4); // only 4 because of the space
         hmdGraph.getViewport().setScalable(true);
-        //hmdGraph.getGridLabelRenderer().setHorizontalLabelsAngle(45);
         hmdGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter()
         {
             @Override
@@ -180,7 +176,6 @@ public class NodeInfoActivity extends AppCompatActivity {
                 }
             }
         });
-        //hmdGraph.getGridLabelRenderer().setHumanRounding(true);
     }
 }
 

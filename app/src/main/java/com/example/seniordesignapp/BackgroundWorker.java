@@ -22,6 +22,7 @@ import java.util.List;
 public class BackgroundWorker extends Worker {
     private char[] token = getApplicationContext().getString(R.string.token).toCharArray();
     private String org = getApplicationContext().getString(R.string.org);
+    private String url = getApplicationContext().getString(R.string.url);
     private static String bucket = "Sensor Data";
     private NodeRepository repo;
 
@@ -34,7 +35,7 @@ public class BackgroundWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        InfluxDBClient influxDBClient = InfluxDBClientFactory.create("https://europe-west1-1.gcp.cloud2.influxdata.com", token, org, bucket);
+        InfluxDBClient influxDBClient = InfluxDBClientFactory.create(url, token, org, bucket);
 
         String flux = "from(bucket:\"Sensor Data\") " +
                 "|> range(start: -1d) " +
